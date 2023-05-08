@@ -1,33 +1,46 @@
-import styled, { css } from "styled-components"
-import ArrowIcon from '../assets/icon-arrow-down.svg'
-import { useState } from "react"
-
+import styled, { css } from "styled-components";
+import ArrowIcon from "../assets/icon-arrow-down.svg";
 
 interface IProps {
   question: string,
   answer: string,
+  currentNumber: number
+  activeNumber: number | null
+  setActiveNumber: (number: number | null) => void;
 }
 
-export default function Section (props: IProps): JSX.Element {
-  const [showAnswer, setShowAnswer] = useState<boolean>(false);
+export default function Section(props: IProps): JSX.Element {
 
   const handleAnswer = () => {
-    setShowAnswer(!showAnswer);
-  }
+    if (props.currentNumber === props.activeNumber) {
+      props.setActiveNumber(null);
+    } else {
+      props.setActiveNumber(props.currentNumber);
+    }
+    
+  };
 
-    return (
-      <Container>
-        <QuestionBox>
-            <Question onClick={ handleAnswer } showAnswer = { showAnswer }>{props.question}</Question>
-            <Arrow src={ArrowIcon} alt = "arow icon" onClick={ handleAnswer } showAnswer = { showAnswer }/>
-        </QuestionBox>
-        <Answer showAnswer = {showAnswer} >{props.answer}</Answer>
-      </Container>
-    )
+  return (
+    <Container>
+      <QuestionBox>
+        <Question currentNumber={props.currentNumber} activeNumber = {props.activeNumber} onClick={handleAnswer}>
+          {props.question}
+        </Question>
+        <Arrow
+          src={ArrowIcon}
+          alt="arow icon"
+          currentNumber={props.currentNumber} activeNumber = {props.activeNumber}
+          onClick={handleAnswer}
+        />
+      </QuestionBox>
+      {props.currentNumber === props.activeNumber
+      ? 
+        <Answer currentNumber = {props.currentNumber}>{props.answer}</Answer> 
+      : 
+      null}
+    </Container>
+  );
 }
-
-
-
 
 const Container = styled.div`
   width: 27.9rem;
@@ -35,49 +48,45 @@ const Container = styled.div`
   flex-direction: column;
   gap: 1.3rem;
   padding-bottom: 1.8rem;
-  border-bottom: 1px solid #E8E8EA;
-`
+  border-bottom: 1px solid #e8e8ea;
+`;
 
 const QuestionBox = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 interface IShowAnswer {
-  showAnswer: boolean
+  currentNumber: number,
+  activeNumber: number | null
 }
 
 const Question = styled.p<IShowAnswer>`
-  ${props => css`
+  ${(props) => css`
     width: 33ch;
-    color: ${props.showAnswer ? "#1E1F36" : "#4B4C5F"};
+    color: ${props.currentNumber === props.activeNumber ? "#1E1F36" : "#4B4C5F"};
     cursor: pointer;
     transition: 0.3s;
-    font-weight: ${props.showAnswer ? "700" : "400"};
+    font-weight: ${props.currentNumber === props.activeNumber ? "700" : "400"};
 
     &:hover {
-      color: #F47B56;
+      color: #f47b56;
     }
   `}
-  
-`
+`;
 
 const Arrow = styled.img<IShowAnswer>`
-  ${props => css`
+  ${(props) => css`
     cursor: pointer;
     transition: 0.3s;
-    transform: Rotate(${props.showAnswer ? "180deg": "0deg"})
+    transform: Rotate(${props.currentNumber === props.activeNumber ? "180deg" : "0deg"});
   `}
-`
+`;
 
-const Answer = styled.p<IShowAnswer>`
-  ${props => css`
-    font-size: 1.2rem;
-    line-height: 1.5em;
-    color: #787887;
-    display: ${props.showAnswer ? "block": "none"};
-  `}
-  
-`
+const Answer = styled.p<{ currentNumber: number }>`
+  font-size: 1.2rem;
+  line-height: 1.5em;
+  color: #787887;
+`;
