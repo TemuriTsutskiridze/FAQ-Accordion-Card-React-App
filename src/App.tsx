@@ -3,6 +3,14 @@ import { GlobalStyles } from "./components/Globals";
 import Section from "./components/Section.tsx";
 import { useState } from "react";
 
+import DesktopBg from './assets/bg-pattern-desktop.svg';
+import MobileBg from './assets/bg-pattern-mobile.svg';
+import IllustrationBox from './assets/illustration-box-desktop.svg';
+import WomanDesktop from './assets/illustration-woman-online-desktop.svg';
+import WomanMobile from './assets/illustration-woman-online-mobile.svg';
+
+import DATA from "./data/Qeustion_Answer.ts";
+
 function App() {
   const [activeNumber, setActiveNumber] = useState<null | number>(null);
 
@@ -10,48 +18,22 @@ function App() {
     <>
       <GlobalStyles />
       <Main>
+        <WomanMobileImage src = {WomanMobile}></WomanMobileImage>
+        <IllustrationBoxImage src = {IllustrationBox}></IllustrationBoxImage>
         <Title>FAQ</Title>
-        <Section
-          question={"How many team members can I invite?"}
-          answer={
-            "You can invite 5 people maximum, but if you purchase pro membership, you will abel to invite 15 people"
-          }
-          currentNumber = {1}
-          activeNumber = { activeNumber }
-          setActiveNumber = {setActiveNumber}
-        />
-        <Section
-          question={"What is the maximum file upload size?"}
-          answer={
-            "No more than 2GB. All files in your account must fit your allotted storage space."
-          }
-          currentNumber = {2}
-          activeNumber = { activeNumber }
-          setActiveNumber = {setActiveNumber}
-        />
-        <Section
-          question={"How do I reset my password?"}
-          answer={"You can find that information on our website"}
-          currentNumber = {3}
-          activeNumber = { activeNumber }
-          setActiveNumber = {setActiveNumber}
-        />
-        <Section
-          question={"Can I cancel my subscription?"}
-          answer={
-            "Yes, you can. But keep in mind that there are no refunds if you cancel it in the middle of month"
-          }
-          currentNumber = {4}
-          activeNumber = { activeNumber }
-          setActiveNumber = {setActiveNumber}
-        />
-        <Section
-          question={"Do you provide additional support?"}
-          answer={"Yes, we do. You can find that information on our website"}
-          currentNumber = {5}
-          activeNumber = { activeNumber }
-          setActiveNumber = {setActiveNumber}
-        />
+
+        { DATA.map((item, index) => {
+          return (
+            <Section 
+            key={ index }
+            question={ item.question }
+            answer = { item.answer }
+            currentNumber={ index }
+            activeNumber={ activeNumber }
+            setActiveNumber={ setActiveNumber }/>
+          )
+        })}
+
       </Main>
     </>
   );
@@ -69,12 +51,51 @@ const Main = styled.main`
   gap: 1.9rem;
   flex-direction: column;
   align-items: center;
+  background-image: url(${MobileBg});
+  background-repeat: no-repeat;
+  background-position: top 0 left 50%;
+  position: relative;
+
+  @media (min-width: 90em) {
+    padding: 6.5rem 9.5rem 8.3rem 47.6rem;
+    align-items: flex-start;
+    background-image: url(${WomanDesktop}), url(${DesktopBg});
+    background-position: top 50% left -9rem, top 50% right 53.2rem;
+    font-size: 1.5rem;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 3.2rem;
   line-height: 1.25em;
   color: #1e1f36;
+
+  @media (min-width: 90em) {
+    margin-bottom: 4.5rem;
+  }
 `;
+
+const WomanMobileImage = styled.img`
+  width: 23.7rem;
+  height: 18rem;
+  position: absolute;
+  top: -10.5rem;
+  display: block;
+
+  @media (min-width: 90em){
+    display: none;
+  }
+`
+
+const IllustrationBoxImage = styled.img`
+  display: none;
+
+  @media (min-width: 90em) {
+    display: block;
+    position: absolute;
+    top: 40.5%;
+    left: -9rem;
+  }
+`
 
 export default App;

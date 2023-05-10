@@ -49,6 +49,10 @@ const Container = styled.div`
   gap: 1.3rem;
   padding-bottom: 1.8rem;
   border-bottom: 1px solid #e8e8ea;
+
+  @media (min-width: 90em) {
+    width: 35rem;
+  }
 `;
 
 const QuestionBox = styled.div`

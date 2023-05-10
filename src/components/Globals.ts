@@ -21,5 +21,10 @@ export const GlobalStyles = createGlobalStyle`
         padding: 14.8rem 8.5rem;
         display: flex;
         justify-content: center;
+
+        @media (min-width: 90em) {
+            padding: 5rem 0;
+            align-items: center;
+        }
     }
 `
